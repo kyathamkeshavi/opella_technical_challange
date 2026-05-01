@@ -1,0 +1,59 @@
+name: Terraform
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+
+env:
+  ARM_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+
+jobs:
+  terraform:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Set Environment
+        id: setenv
+        run: |
+          if [[ "${GITHUB_REF##*/}" == "main" ]]; then
+            echo "ENV=prod" >> $GITHUB_ENV
+          else
+            echo "ENV=dev" >> $GITHUB_ENV
+          fi
+
+      - name: Set Working Directory
+        run: echo "WORKING_DIR=envs/${ENV}" >> $GITHUB_ENV
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+
+      - name: Terraform Init
+        run: terraform init
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Terraform Validate
+        run: terraform validate
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Terraform Plan
+        run: terraform plan -var-file="terraform.tfvars"
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Terraform Apply
+        if: github.event_name == 'push' && env.ENV == 'dev'
+        run: terraform apply -auto-approve -var-file="terraform.tfvars"
+        working-directory: ${{ env.WORKING_DIR }}
+
+      - name: Terraform Apply (Prod - Manual Approval Recommended)
+        if: github.event_name == 'push' && env.ENV == 'prod'
+        run: terraform apply -auto-approve -var-file="terraform.tfvars"
+        working-directory: ${{ env.WORKING_DIR }}
