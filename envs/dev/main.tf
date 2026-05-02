@@ -29,6 +29,7 @@ module "nsg" {
   nsg_name            = "dev-nsg"
   location            = var.location
   resource_group_name = azurerm_resource_group.dev.name
+  subnet_id = module.vnet.subnet_id
 }
 
 module "vm" {
