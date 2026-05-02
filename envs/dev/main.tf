@@ -7,6 +7,11 @@ resource "azurerm_resource_group" "dev" {
   location = var.location
 }
 
+resource "azurerm_resource_group" "devsa" {
+  name     = "rg-terraform-state"
+  location = var.location
+}
+
 module "vnet" {
   source = "../../modules/vnet"
 
