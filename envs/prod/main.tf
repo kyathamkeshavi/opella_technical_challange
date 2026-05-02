@@ -2,17 +2,17 @@ provider "azurerm" {
   features {}
 }
 
-resource "azurerm_resource_group" "dev" {
-  name     = "rg-dev-eastus"
+resource "azurerm_resource_group" "prod" {
+  name     = "rg-prod-eastus"
   location = "East US"
 }
 
 module "vnet" {
   source = "../../modules/vnet"
 
-  name                = "vnet-dev"
-  location            = azurerm_resource_group.dev.location
-  resource_group_name = azurerm_resource_group.dev.name
+  name                = "vnet-prod"
+  location            = azurerm_resource_group.prod.location
+  resource_group_name = azurerm_resource_group.prod.name
   address_space       = ["10.0.0.0/16"]
 
   subnets = {
@@ -22,6 +22,6 @@ module "vnet" {
   }
 
   tags = {
-    env = "dev"
+    env = "prod"
   }
 }
