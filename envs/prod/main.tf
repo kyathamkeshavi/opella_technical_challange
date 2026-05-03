@@ -25,3 +25,11 @@ module "vnet" {
     env = "prod"
   }
 }
+
+module "nsg" {
+  source              = "../../modules/nsg"
+  nsg_name            = "prod-nsg"
+  location            = azurerm_resource_group.prod.location
+  resource_group_name = azurerm_resource_group.prod.name
+  subnet_id = module.vnet.subnet_id
+}

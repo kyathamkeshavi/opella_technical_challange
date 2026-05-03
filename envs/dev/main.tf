@@ -23,3 +23,20 @@ module "vnet" {
 
   tags = var.tags
 }
+
+module "nsg" {
+  source              = "../../modules/nsg"
+  nsg_name            = "dev-nsg"
+  location            = var.location
+  resource_group_name = azurerm_resource_group.dev.name
+  subnet_id = module.vnet.subnet_id
+}
+
+# module "vm" {
+#   source              = "../../modules/vm"
+#   vm_name             = "dev-vm"
+#   location            = var.location
+#   resource_group_name = azurerm_resource_group.dev.name
+#   subnet_id           = module.vnet.subnet_id
+# }
+
