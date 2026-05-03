@@ -13,7 +13,7 @@ resource "azurerm_network_interface" "nic" {
 resource "azurerm_linux_virtual_machine" "vm" {
   name                = var.vm_name
   resource_group_name = var.resource_group_name
-  location            = var.location
+  location            = "centralus"
   size                = "Standard_B2s"
   admin_username      = "azureuser"
   disable_password_authentication = false
