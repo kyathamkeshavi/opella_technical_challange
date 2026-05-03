@@ -13,8 +13,8 @@ resource "azurerm_network_interface" "nic" {
 resource "azurerm_linux_virtual_machine" "vm" {
   name                = var.vm_name
   resource_group_name = var.resource_group_name
-  location            = "westus2"
-  size                = "Standard_DS1_v2"
+  location            = var.location
+  size                = "Standard_B2ms"
   admin_username      = "azureuser"
   disable_password_authentication = false
 
