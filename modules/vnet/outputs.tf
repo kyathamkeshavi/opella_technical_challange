@@ -7,5 +7,5 @@ output "vnet_id" {
 #}
 
 output "subnet_id" {
-  value = azurerm_subnet.azsubnet.id
+  value = azurerm_subnet.azsubnet["deafult"].id
 }
