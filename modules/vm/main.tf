@@ -10,29 +10,29 @@ resource "azurerm_network_interface" "nic" {
   }
 }
 
-resource "azurerm_linux_virtual_machine" "vm" {
-  name                = var.vm_name
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  size                = "Standard_D4s_v6"
-  admin_username      = "azureuser"
-  disable_password_authentication = false
+# resource "azurerm_linux_virtual_machine" "vm" {
+#   name                = var.vm_name
+#   resource_group_name = var.resource_group_name
+#   location            = var.location
+#   size                = "Standard_D4s_v6"
+#   admin_username      = "azureuser"
+#   disable_password_authentication = false
 
-  network_interface_ids = [
-    azurerm_network_interface.nic.id
-  ]
+#   network_interface_ids = [
+#     azurerm_network_interface.nic.id
+#   ]
 
-  admin_password = "Password1234!"  # ⚠️ use keyvault later
+#   admin_password = "Password1234!"  # ⚠️ use keyvault later
 
-  os_disk {
-    caching              = "ReadWrite"
-    storage_account_type = "Standard_LRS"
-  }
+#   os_disk {
+#     caching              = "ReadWrite"
+#     storage_account_type = "Standard_LRS"
+#   }
 
-  source_image_reference {
-    publisher = "Canonical"
-    offer     = "0001-com-ubuntu-server-jammy"
-    sku       = "22_04-lts"
-    version   = "latest"
-  }
-}
+#   source_image_reference {
+#     publisher = "Canonical"
+#     offer     = "0001-com-ubuntu-server-jammy"
+#     sku       = "22_04-lts"
+#     version   = "latest"
+#   }
+# }
